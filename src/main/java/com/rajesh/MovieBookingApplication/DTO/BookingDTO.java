@@ -9,9 +9,9 @@ import java.util.List;
 @Data
 public class BookingDTO {
     private int numberOfSeats;
-    private LocalDateTime bookingTime;
-    private double bookingPrice;
-    private BookingStatus bookingStatus;
+//    private LocalDateTime bookingTime;
+//    private double bookingPrice;
+//    private BookingStatus bookingStatus;
     private List<String> seatNumbers;
     private long userId;
     private long showId;

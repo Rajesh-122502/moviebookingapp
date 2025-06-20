@@ -1,5 +1,6 @@
 package com.rajesh.MovieBookingApplication.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,5 +22,6 @@ public class Show {
     @JoinColumn(name = "theatre_id", nullable = false)
     private Theatre theatre;
     @OneToMany(mappedBy = "show", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Booking> bookings;
 }

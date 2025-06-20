@@ -1,5 +1,6 @@
 package com.rajesh.MovieBookingApplication.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,5 +20,6 @@ public class Movie {
     private LocalDate releaseDate;
     private String language;
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Show> show;
 }
