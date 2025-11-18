@@ -5,6 +5,7 @@ import com.rajesh.MovieBookingApplication.Entity.Booking;
 import com.rajesh.MovieBookingApplication.Entity.Movie;
 import com.rajesh.MovieBookingApplication.Entity.Show;
 import com.rajesh.MovieBookingApplication.Entity.Theatre;
+import com.rajesh.MovieBookingApplication.ExceptionHandlers.NoMovieFoundException;
 import com.rajesh.MovieBookingApplication.Repository.MovieRepository;
 import com.rajesh.MovieBookingApplication.Repository.ShowRepository;
 import com.rajesh.MovieBookingApplication.Repository.TheatreRepository;
@@ -24,7 +25,7 @@ public class ShowService {
     private TheatreRepository theatreRepository;
     public Show createShow(ShowDTO showDTO){
         Movie movie= movieRepository.findById(showDTO.getMovieId())
-                .orElseThrow(()->new RuntimeException("No movie found for id "+showDTO.getMovieId()));
+                .orElseThrow(()->new NoMovieFoundException("No movie found for id "+showDTO.getMovieId()));
         Theatre theatre= theatreRepository.findById(showDTO.getTheatreId())
                 .orElseThrow(()->new RuntimeException("No theatre found for id "+showDTO.getTheatreId()));
         Show show= new Show();

@@ -2,6 +2,8 @@ package com.rajesh.MovieBookingApplication.Service;
 
 import com.rajesh.MovieBookingApplication.DTO.MovieDTO;
 import com.rajesh.MovieBookingApplication.Entity.Movie;
+import com.rajesh.MovieBookingApplication.ExceptionHandlers.MovieAlreadyExistException;
+import com.rajesh.MovieBookingApplication.ExceptionHandlers.NoMovieFoundException;
 import com.rajesh.MovieBookingApplication.Repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,10 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
     public Movie addMovie(MovieDTO movieDTO) {
+        Optional<Movie> movie1= movieRepository.findByName(movieDTO.getName());
+        if(movie1.isPresent()){
+            throw new MovieAlreadyExistException("movie with the name "+movieDTO.getName()+ " already present.");
+        }
         Movie movie= new Movie();
         movie.setName(movieDTO.getName());
         movie.setDescription(movieDTO.getDescription());
@@ -28,11 +34,11 @@ public class MovieService {
     }
     public List<Movie> getMoviesByGenre(String genre){
         Optional<List<Movie>> listofmoives= movieRepository.findByGenre(genre);
-        if(listofmoives.isPresent()){
+        if(!listofmoives.get().isEmpty()){
             return listofmoives.get();
         }
         else{
-            throw new RuntimeException("no movie found for genre "+genre);
+            throw new NoMovieFoundException("no movie found for genre "+genre);
         }
     }
     public List<Movie> getMoviesByLanguage(String language){
@@ -41,7 +47,7 @@ public class MovieService {
             return listofmoives.get();
         }
         else{
-            throw new RuntimeException("no movie found for language "+language);
+            throw new NoMovieFoundException("no movie found for language "+language);
         }
     }
     public Movie getMovieByName(String name){
@@ -50,12 +56,12 @@ public class MovieService {
             return moviebyname.get();
         }
         else{
-            throw new RuntimeException("no movie found for name "+name);
+            throw new NoMovieFoundException("no movie found for name "+name);
         }
     }
 
     public Movie updateMovie(Long id, MovieDTO movieDTO) {
-        Movie movie= movieRepository.findById(id).orElseThrow(()->new RuntimeException("no movie found for the id "+id));
+        Movie movie= movieRepository.findById(id).orElseThrow(()->new NoMovieFoundException("no movie found for the id "+id));
         movie.setName(movieDTO.getName());
         movie.setDescription(movieDTO.getDescription());
         movie.setGenre(movieDTO.getGenre());

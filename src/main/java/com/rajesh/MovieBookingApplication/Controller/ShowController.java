@@ -5,6 +5,7 @@ import com.rajesh.MovieBookingApplication.Entity.Show;
 import com.rajesh.MovieBookingApplication.Service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class ShowController {
     @Autowired
     private ShowService showService;
     @PostMapping("/createshow")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Show> createShow(@RequestBody ShowDTO showDTO){
         return ResponseEntity.ok(showService.createShow(showDTO));
     }
@@ -31,10 +33,12 @@ public class ShowController {
         return ResponseEntity.ok(showService.getShowsByTheatre(id));
     }
     @PutMapping("/updateshow/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Show> updateShow(@PathVariable long id, @RequestBody ShowDTO showDTO){
         return ResponseEntity.ok(showService.updateShow(id, showDTO));
     }
     @DeleteMapping("/deleteshow/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteShow(@PathVariable long id){
         showService.deleteShow(id);
         return ResponseEntity.ok().build();

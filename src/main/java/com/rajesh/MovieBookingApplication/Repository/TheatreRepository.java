@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TheatreRepository extends JpaRepository<Theatre, Long> {
-    public Optional<List<Theatre>> findByTheatreLocation(String location);
+    Optional<List<Theatre>> findByTheatreLocation(String location);
+    Optional<Theatre> findByTheatreName(String name);
 }
